@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.views import View
-from .utils.scraping import buscar_livro_por_nome
+from .utils.google_books import search_books_by_title
 import asyncio
 from books.models import Book
 
@@ -18,17 +18,13 @@ class ScrapingView(LoginRequiredMixin, View):
 
   def post(self, request):
     title = request.POST.get('title')
-    # metadata_database = Book.objects.filter(gtin_ean=title).first()
 
     if not title:
       messages.error(request, self.error_message)
       return redirect('book_search')
 
-    metadata_scraping = self.scraping(title=title)
+    metadata_scraping = search_books_by_title(title)
 
     request.session['book_metadata'] = metadata_scraping
 
     return redirect('add_book')
-
-  def scraping(self, title=None):
-    return buscar_livro_por_nome(title)

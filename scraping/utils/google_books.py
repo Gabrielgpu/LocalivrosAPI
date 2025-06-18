@@ -3,7 +3,7 @@ import pprint
 import json
 from datetime import datetime
 
-def buscar_livro_por_nome(nome_livro):
+def search_books_by_title(nome_livro):
     url = f"https://www.googleapis.com/books/v1/volumes?q=intitle:{nome_livro}"
     response = requests.get(url)
 
