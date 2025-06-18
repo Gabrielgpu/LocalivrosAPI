@@ -1,0 +1,56 @@
+{% load static %}
+<html lang="pt-BR">
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Newsreader%3Awght%40400%3B500%3B700%3B800&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
+    />
+
+    <title>LOCALIVROS</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    {% block scripts %}{% endblock scripts %}
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  </head>
+  <body>
+    <div class="relative flex size-full min-h-screen flex-col bg-slate-50 group/design-root overflow-x-hidden" style='font-family: Newsreader, "Noto Sans", sans-serif;'>
+      <div class="layout-container flex h-full grow flex-col">
+        {% include "navbar.html" %}
+          <br>
+          {% if messages %}
+            {% for message in messages %}
+              <div
+                class="
+                  relative mb-4 rounded-lg px-4 py-3 pr-10 text-sm font-medium
+                  {% if message.tags == 'success' %}
+                    bg-green-100 text-green-800
+                  {% elif message.tags == 'error' %}
+                    bg-red-100 text-red-800
+                  {% elif message.tags == 'warning' %}
+                    bg-yellow-100 text-yellow-800
+                  {% else %}
+                    bg-blue-100 text-blue-800
+                  {% endif %}
+                "
+                role="alert"
+              >
+                {{ message }}
+                <button
+                  type="button"
+                  class="absolute right-2 top-2 text-xl font-bold text-gray-500 hover:text-gray-700"
+                  onclick="this.parentElement.remove()"
+                >
+                  &times;
+                </button>
+              </div>
+            {% endfor %}
+          {% endif %}
+          
+          {% block content %}{% endblock %}
+      </div>
+    </div>
+  </body>
+</html>
