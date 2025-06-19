@@ -13,7 +13,7 @@ class ScrapingView(LoginRequiredMixin, View):
   
 
   def get(self, request):
-    latest_books = Book.objects.order_by('-created_at')[:5]
+    latest_books = Book.objects.filter(user=request.user).order_by('-created_at')[:5]
     return render(request, self.template_name, {'books': latest_books})
 
   def post(self, request):
