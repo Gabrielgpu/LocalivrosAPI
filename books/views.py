@@ -33,7 +33,7 @@ class BookCreateView(LoginRequiredMixin, CreateView):
       for id in books_id:
         id = int(id)
         book = Book.objects.create(
-          created_by = request.user,
+          user = request.user,
           description = metadata[id].get('title', ''),
           gtin_ean = metadata[id].get('gtin_ean', ''),
           mark = metadata[id].get('editora', ''),
@@ -61,9 +61,9 @@ class BookListView(LoginRequiredMixin, ListView):
   paginate_by = 10
   ordering = ['id']
 
-
   def get_queryset(self):
-      queryset = super().get_queryset()
+      queryset = self.model.objects.filter(user=self.request.user)
+
       query = self.request.GET.get('query')
 
       if query:
