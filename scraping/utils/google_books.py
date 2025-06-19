@@ -19,19 +19,20 @@ def search_books_by_title(nome_livro):
 
     for item in data["items"]:
         volume_info = item["volumeInfo"]
-        books.append({
-            "title": volume_info.get("title"),
-            "author": volume_info.get("authors", []),
-            "editora": volume_info.get("publisher"),
-            "year_published": parse_google_books_date(volume_info.get("publishedDate")),
-            "short_description": volume_info.get("description"),
-            "isbn_10": next((id['identifier'] for id in volume_info.get("industryIdentifiers", []) if id['type'] == 'ISBN_10'), None),
-            "gtin_ean": next((id['identifier'] for id in volume_info.get("industryIdentifiers", []) if id['type'] == 'ISBN_13'), None),
-            "pages_of_number": volume_info.get("pageCount"),
-            "product_category": volume_info.get("categories", []),
-            "idioma": volume_info.get("language"),
-            "url_external_images": volume_info.get("imageLinks", {}).get("thumbnail")
-        })
+        isbn13 = next((id['identifier'] for id in volume_info.get("industryIdentifiers", []) if id['type'] == 'ISBN_13'), None)
+        if isbn13:
+            books.append({
+                "title": volume_info.get("title"),
+                "author": volume_info.get("authors", []),
+                "editora": volume_info.get("publisher"),
+                "year_published": parse_google_books_date(volume_info.get("publishedDate")),
+                "short_description": volume_info.get("description"),
+                "gtin_ean": isbn13,
+                "pages_of_number": volume_info.get("pageCount"),
+                "product_category": volume_info.get("categories", []),
+                "idioma": volume_info.get("language"),
+                "url_external_images": volume_info.get("imageLinks", {}).get("thumbnail")
+            })
 
     return books
 
