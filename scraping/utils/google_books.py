@@ -51,5 +51,4 @@ def parse_google_books_date(date_str):
         if datetime.strptime(date_str, formats).date():
             return date_str
     except ValueError:
-        print(date_str)
         return None

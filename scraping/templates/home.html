@@ -8,7 +8,7 @@
 {% block content %}
   <div class="px-40 flex flex-1 justify-center py-5">
     <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
-
+      
       <div class="px-4 py-2 text-center">
         <h2 class="text-3xl font-bold mb-2">Bem-vindo ao Localivros</h2>
         <p class="text-gray-600">Pesquise livros pelo Título e gerencie seu acervo com facilidade.</p>
@@ -50,19 +50,17 @@
           </div>
         </label>
       </div>
-
-      <div class="px-4">
-        <div class="bg-white rounded-xl shadow-md p-6 ">
-          <h2 class="text-xl font-semibold text-gray-800 mb-4">📚 Últimos livros cadastrados</h2>
-          <ul class="list-disc list-inside text-gray-700 space-y-1">
-            {% for book in books %}
-            <li>{{book.description|truncatechars:40}}</li>
-            {% endfor %}
-          </ul>
+      <div class="@container">
+        <div class="@[480px]:px-4 @[480px]:py-3">
+          <div
+            class="bg-cover bg-center flex flex-col justify-end overflow-hidden bg-gray-50 @[480px]:rounded-xl min-h-80"
+            style='background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 25%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuBTGKHKoQGwYLwbBOixDK6JrO-e1M6GVJMJLt5GG1DTdl4j7pkflhsI8cIB5LFSJryyHX2ciXKzwsnn2K2x1jyTiW00Tg4kxqllqV4gcXVAeRO5lfagZhxZ0_tlQmdkpn1zAezM1g_a81Bi9ywhHd42C0VlJmnmJJ69xhWyLM0Vz65q5uTfKiiDnsi-Yzqtrsoz1lEqRpH73NHRnjRZyuiL5wigMbw-jlJUoffUD_mrGz8U8Fptu-od9RtHM62E5iYA-jLj0X9K_6g");'
+          >
+            <div class="flex p-4"><p class="text-white tracking-light text-[28px] font-bold leading-tight">Discover Your Next Great Read</p></div>
+          </div>
         </div>
-      
-    </div>
-</div>
+      </div>
+  </div>
 
 {% endblock content %}
 
