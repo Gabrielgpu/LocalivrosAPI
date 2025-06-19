@@ -31,7 +31,8 @@ def search_books_by_title(nome_livro):
                 "pages_of_number": volume_info.get("pageCount"),
                 "product_category": volume_info.get("categories", []),
                 "idioma": volume_info.get("language"),
-                "url_external_images": volume_info.get("imageLinks", {}).get("thumbnail")
+                "url_external_images": volume_info.get("imageLinks", {}).get("thumbnail"),
+                "stock": 1
             })
 
     return books
