@@ -15,7 +15,7 @@ from .forms import EditBookForm
 class BookCreateView(LoginRequiredMixin, CreateView):
   template_name = 'register_book.html'
   success_url = reverse_lazy('book_search')
-  success_message = 'livros foram cadastrados'
+  success_message = 'Livros cadastrados com sucesso!'
   error_message = 'Dados insuficientes para cadastrar o livro.'
   
 
@@ -48,12 +48,11 @@ class BookCreateView(LoginRequiredMixin, CreateView):
         
         book.code = f"LC-{book.id}"
         book.save()
-        
     else:
       messages.error(request, self.error_message)
       return redirect('book_search')
 
-    messages.success(request, f"{len(books_id)} - {self.success_message}")
+    messages.success(request, self.success_message)
     return redirect(self.success_url)
 
 class BookListView(LoginRequiredMixin, ListView):
