@@ -16,7 +16,7 @@ class BookCreateView(LoginRequiredMixin, CreateView):
   template_name = 'register_book.html'
   success_url = reverse_lazy('book_search')
   success_message = 'Livros cadastrados com sucesso!'
-  error_message = 'Dados insuficientes para cadastrar o livro.'
+  error_message = 'Selecione um produto.'
   
 
   def get(self, request, *args, **kwargs):
@@ -24,12 +24,14 @@ class BookCreateView(LoginRequiredMixin, CreateView):
     return render(request, self.template_name, {'metadata': metadata})
 
   def post(self, request, *args, **kwargs):
-    metadata = request.session.pop('book_metadata', None)
     # stock = request.POST.get('stock')
-
     books_id = request.POST.getlist("books")
+    books_price = request.POST.getlist("price")
+    books_stock = request.POST.getlist("stock")
+
 
     if books_id:
+      metadata = request.session.pop('book_metadata', None)
       for id in books_id:
         id = int(id)
         book = Book.objects.create(
@@ -43,14 +45,15 @@ class BookCreateView(LoginRequiredMixin, CreateView):
           year_published = metadata[id].get('year_published', ''),
           page_of_number = metadata[id].get('page_of_number', ''),
           author = metadata[id].get('author', ''),
-          stock = 1
+          stock = books_stock[id],
+          price = books_price[id] or 5.0
         )
         
         book.code = f"LC-{book.id}"
         book.save()
     else:
       messages.error(request, self.error_message)
-      return redirect('book_search')
+      return redirect('add_book')
 
     messages.success(request, self.success_message)
     return redirect(self.success_url)
