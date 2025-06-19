@@ -23,7 +23,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-unsafe-dev-key")
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["https://localivrosapi.onrender.com/"]
+ALLOWED_HOSTS = ["localivrosapi.onrender.com"]
 
 
 # Application definition
