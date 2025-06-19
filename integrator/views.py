@@ -111,7 +111,7 @@ class SendProductToBlingView(LoginRequiredMixin, View):
             token_valid = credentials_token.refresh()
             
             if not token_valid:
-                messages.error(request, 'Problemas para fazer refresh token')
+                messages.error(request, 'Problemas com refresh token, tente renovar suas credenciais')
                 return redirect('book_search')
 
         product_response = create_product(book, credentials_token.access_token)

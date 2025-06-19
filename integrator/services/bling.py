@@ -11,7 +11,7 @@ def create_product(model, access_token):
     "formato": "S",
     "id": "",
     "codigo": f"{model.code}",
-    "preco": f"{15}",
+    "preco": f"{model.price}",
     "descricaoCurta": f"{model.short_description}",
     "dataValidade": "",
     "unidade": "UN",
@@ -518,8 +518,8 @@ def increment_stock(model, deposit_id, access_token):
         "id": f"{model.id_bling}"
         },
         "quantidade": f"{model.stock}",
-        "preco": f"{15}",
-        "custo": f"{15}",
+        "preco": f"{model.price}",
+        "custo": f"{model.price}",
         "observacoes": ""
     })
 
