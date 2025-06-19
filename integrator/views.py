@@ -11,7 +11,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from requests_oauthlib import OAuth2Session
 from pathlib import Path
-import pprint
 import os
 
 
@@ -32,6 +31,7 @@ class AuthBlingView(LoginRequiredMixin, View):
             messages.error(request, "Credenciais Bling não encontradas, registre suas credenciais!")
             return redirect('bling_credentials')
         
+
         client_id = bling_credential.client_id
         
         os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
@@ -107,7 +107,7 @@ class SendProductToBlingView(LoginRequiredMixin, View):
         credentials_token = ApiIntegrationToken.objects.filter(user=request.user).last()
 
         if credentials_token is None:
-            messages.info(request, "Foi necessário gerar uma novo token, tente enviar o produto novamente!")
+            messages.info(request, "Não identificamos suas credenciais")
             return redirect('auth_bling')
 
         if not credentials_token.is_token_valid():
