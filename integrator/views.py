@@ -33,8 +33,6 @@ class AuthBlingView(LoginRequiredMixin, View):
         
 
         client_id = bling_credential.client_id
-        
-        os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
         print(redirect_uri)
 
