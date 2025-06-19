@@ -24,6 +24,7 @@
                   <th class="table-00152279-cdab-4b39-b2c3-79dd05c7c840-column-416 px-4 py-3 text-left text-[#101418] w-[400px] text-sm font-medium leading-normal">Author</th>
                   <th class="table-00152279-cdab-4b39-b2c3-79dd05c7c840-column-536 px-4 py-3 text-left text-[#101418] w-[400px] text-sm font-medium leading-normal">ISBN</th>
                   <th class="table-00152279-cdab-4b39-b2c3-79dd05c7c840-column-536 px-4 py-3 text-left text-[#101418] w-[400px] text-sm font-medium leading-normal">Price</th>
+                  <th class="table-00152279-cdab-4b39-b2c3-79dd05c7c840-column-536 px-4 py-3 text-left text-[#101418] w-[400px] text-sm font-medium leading-normal">Stock</th>
                 </tr>
               </thead>
               <tbody>
@@ -46,6 +47,17 @@
                     </td>
                     <td class="table-00152279-cdab-4b39-b2c3-79dd05c7c840-column-536 h-[72px] px-4 py-2 w-[400px] text-[#5c718a] text-sm font-normal leading-normal">
                       {{ book.gtin_ean }}
+                    </td>
+                    <td class="px-4 py-2 w-[400px]">
+                      <input type="number" name="price" value="" step="0.01" min="5.00" placeholder="R$ 5,00"
+                        class="w-20 bg-white border border-gray-300 rounded px-2 py-1 text-sm text-[#101418]" />
+                    </td>
+                    <td class="px-4 py-2 w-[400px]">
+                      <select name="stock" class="w-20 bg-white border border-gray-300 rounded px-2 py-1 text-sm text-[#101418]">
+                        {% for i in "1234567"|make_list %}
+                          <option value="{{ i }}" {% if book.stock == i %}selected{% endif %}>{{ i }}</option>
+                        {% endfor %}
+                      </select>
                     </td>
                   </tr>
                 {% endfor %}
