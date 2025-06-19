@@ -24,7 +24,6 @@ class BookCreateView(LoginRequiredMixin, CreateView):
     return render(request, self.template_name, {'metadata': metadata})
 
   def post(self, request, *args, **kwargs):
-    # stock = request.POST.get('stock')
     books_id = request.POST.getlist("books")
     books_price = request.POST.getlist("price")
     books_stock = request.POST.getlist("stock")
