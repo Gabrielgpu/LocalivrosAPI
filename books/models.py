@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 
 class Book(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='books', null=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(max_digits=10, decimal_places=2, null=True)
     id_bling = models.CharField(max_length=50, blank=True, null=True)
     code = models.CharField(max_length=50, blank=True)
     gtin_ean = models.CharField(max_length=255, blank=True)

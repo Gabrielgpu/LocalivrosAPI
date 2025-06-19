@@ -20,7 +20,6 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('description', models.TextField(blank=True)),
-                ('price', models.CharField(blank=True, max_length=255)),
                 ('gtin_ean', models.CharField(blank=True, max_length=255)),
                 ('width', models.CharField(blank=True, max_length=100)),
                 ('height', models.CharField(blank=True, max_length=100)),
