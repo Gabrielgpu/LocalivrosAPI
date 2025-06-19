@@ -107,7 +107,6 @@ class SendProductToBlingView(LoginRequiredMixin, View):
         credentials_token = ApiIntegrationToken.objects.filter(user=request.user).last()
 
         if credentials_token is None:
-            messages.info(request, "Não identificamos suas credenciais")
             return redirect('auth_bling')
 
         if not credentials_token.is_token_valid():
