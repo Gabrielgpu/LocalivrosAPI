@@ -4,8 +4,10 @@ from datetime import timedelta
 import requests
 import base64
 from django.conf import settings
+from django.contrib.auth.models import User
 
 class ApiIntegrationToken(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='api_tokens', null=True)
     access_token = models.TextField()
     refresh_token = models.TextField()
     expires_in = models.IntegerField()
@@ -52,6 +54,7 @@ class ApiIntegrationToken(models.Model):
 
 
 class BlingCredential(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bling_credentials', null=True)
     client_id = models.CharField(max_length=150, blank=True)
     client_secret = models.CharField(max_length=150, blank=True)
     deposit_id = models.CharField(max_length=50, blank=True)

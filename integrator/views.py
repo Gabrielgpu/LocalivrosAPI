@@ -26,7 +26,13 @@ authorization_base_url = settings.EXTERNAL_API_AUTHORIZATION_END_POINT
 class AuthBlingView(LoginRequiredMixin, View):
 
     def get(self, request):
-        client_id, _ = BlingCredential.get_credentials()
+        bling_credential = BlingCredential.objects.filter(user=request.user).first()
+
+        if not bling_credential:
+            messages.error(request, "Credenciais Bling não encontradas, registre suas credenciais!")
+            return redirect('bling_credentials')
+        
+        client_id = bling_credential.client_id
         
         os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
@@ -48,7 +54,15 @@ class AuthBlingCallbackView(LoginRequiredMixin, View):
     success_message = 'Token armazenado no banco de dados'
 
     def get(self, request):
-        client_id, client_secret = BlingCredential.get_credentials()
+        bling_credential = BlingCredential.objects.filter(user=request.user).first()
+
+        if not bling_credential:
+            messages.error("Credenciais Bling não encontradas, registre suas credenciais!")
+            return redirect('bling_credentials')
+        
+        client_id = bling_credential.client_id
+
+        client_secret = bling_credential.client_secret
 
         oauth = OAuth2Session(
             client_id, 
@@ -67,6 +81,7 @@ class AuthBlingCallbackView(LoginRequiredMixin, View):
         print(f"TOKEN: {token}")
 
         ApiIntegrationToken.objects.create(
+            user=request.user,
             access_token=token.get('access_token'),
             expires_in=token.get('expires_in'),
             refresh_token=token.get('refresh_token'),
@@ -87,9 +102,9 @@ class SendProductToBlingView(LoginRequiredMixin, View):
     def post(self, request):
         id = request.POST.get('id')
 
-        book = Book.objects.filter(id=id).first()
+        book = Book.objects.filter(id=id, user=request.user).first()
 
-        credentials_token = ApiIntegrationToken.objects.last()
+        credentials_token = ApiIntegrationToken.objects.filter(user=request.user).last()
 
         if credentials_token is None:
             messages.info(request, "Foi necessário gerar uma novo token, tente enviar o produto novamente!")
@@ -112,9 +127,9 @@ class SendProductToBlingView(LoginRequiredMixin, View):
         messages.success(request, 'Livro cadastrado na Bling')
 
 
-        bling = BlingCredential.objects.last()
+        bling_credential = BlingCredential.objects.filter(user=request.user).first()
 
-        stock_response = increment_stock(book, bling.deposit_id, credentials_token.access_token)
+        stock_response = increment_stock(book, bling_credential.deposit_id, credentials_token.access_token)
         if stock_response.status_code != 201:
             messages.error(request, 'houve erro ao atualizar estoque.')
             return redirect('books')
@@ -124,15 +139,15 @@ class SendProductToBlingView(LoginRequiredMixin, View):
 
 
 
-class CredentialsBlingToIntegrationCreateView(SuccessMessageMixin, CreateView):
+class CredentialsBlingToIntegrationCreateView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = BlingCredential
     template_name = 'integration_bling.html'
     success_url = reverse_lazy('books')
     success_message = "Credencial salva!"
-    fields = ["client_id", "client_secret", "deposit_id"]
+    fields = ["user", "client_id", "client_secret", "deposit_id"]
 
 
-class EditCredentialsBlingUpdateView(SuccessMessageMixin, UpdateView):
+class EditCredentialsBlingUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = BlingCredential
     template_name = "update_credential.html"
     success_url = reverse_lazy("books")
@@ -140,8 +155,7 @@ class EditCredentialsBlingUpdateView(SuccessMessageMixin, UpdateView):
     pk_url_kwarg = "id"
     fields = ["client_id", "client_secret", "deposit_id"]
     context_object_name = "credential"
+    
 
-
-    def post(self, request, *args, **kwargs):
-        ApiIntegrationToken.objects.all().delete()
-        return super().post(request, *args, **kwargs)
+    def get_queryset(self):
+        return BlingCredential.objects.filter(user=self.request.user)

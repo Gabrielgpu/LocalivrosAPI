@@ -16,6 +16,7 @@
         </div>
             <form method="post" action="{% url "bling_credentials" %}">
                 {% csrf_token %}
+                <input type="text" name="user" value="{{ user.id }}" class="hidden" />
                 <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
                     <label class="flex flex-col min-w-40 flex-1">
                     <p class="text-[#101418] text-base font-medium leading-normal pb-2">Client ID</p>
